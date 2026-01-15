@@ -1,75 +1,79 @@
 import 'package:go_router/go_router.dart';
-import 'package:study_helper_app/features/game/presentation/pages/flash_card_page.dart';
-import 'package:study_helper_app/features/study_guide/presentation/pages/study_guide_viewer_page.dart';
-import '../../features/splash/presentation/pages/splash_page.dart';
-import '../../features/onboarding/presentation/pages/onboarding_page.dart';
-import '../../features/auth/presentation/pages/welcome_page.dart';
-import '../../features/auth/presentation/pages/signup_page.dart';
-import '../../features/auth/presentation/pages/name_input_page.dart';
-import '../../features/home/presentation/pages/home_page.dart';
-import '../../features/game/presentation/pages/create_game_page.dart';
-import '../../features/game/presentation/pages/quiz_page.dart';
-import '../../features/study_guide/presentation/pages/create_study_guide_page.dart';
+import 'package:study_helper_app/features/auth/presentation/pages/forgot_password_page.dart';
+import 'package:study_helper_app/features/auth/presentation/pages/login_page.dart';
+import 'package:study_helper_app/features/auth/presentation/pages/otp_verification_page.dart';
+import 'package:study_helper_app/features/auth/presentation/pages/reset_password_page.dart';
+import 'package:study_helper_app/features/auth/presentation/pages/sign_up_page.dart';
+import 'package:study_helper_app/features/auth/presentation/pages/terms_page.dart';
+import 'package:study_helper_app/features/auth/presentation/pages/welcome_page.dart';
+import 'package:study_helper_app/features/flashcard/presentation/pages/create_flashcard_page.dart';
+import 'package:study_helper_app/features/flashcard/presentation/pages/flashcard_edit_page.dart';
+import 'package:study_helper_app/features/flashcard/presentation/pages/flashcard_list_page.dart';
+import 'package:study_helper_app/features/home/presentation/pages/home_page.dart';
+import 'package:study_helper_app/features/onboarding/presentation/pages/onboarding_page.dart';
+import 'package:study_helper_app/features/onboarding/presentation/pages/user_name_page.dart';
+import 'package:study_helper_app/features/shared/presentation/pages/processing_page.dart';
+import 'package:study_helper_app/features/shared/presentation/pages/upload_resources_page.dart';
+import 'package:study_helper_app/features/splash/presentation/pages/splash_page.dart';
 
 class AppRouter {
-  static final GoRouter router = GoRouter(
-    initialLocation: '/splash',
+  static final router = GoRouter(
+    initialLocation: '/',
     routes: [
-      GoRoute(path: '/splash', builder: (context, state) => const SplashPage()),
+      GoRoute(path: '/', builder: (context, state) => const SplashPage()),
       GoRoute(
         path: '/onboarding',
         builder: (context, state) => const OnboardingPage(),
+      ),
+      GoRoute(
+        path: '/user-name',
+        builder: (context, state) => const UserNamePage(),
       ),
       GoRoute(
         path: '/welcome',
         builder: (context, state) => const WelcomePage(),
       ),
       GoRoute(path: '/login', builder: (context, state) => const LoginPage()),
-      GoRoute(path: '/signup', builder: (context, state) => const SignupPage()),
+      GoRoute(
+        path: '/sign-up',
+        builder: (context, state) => const SignUpPage(),
+      ),
       GoRoute(
         path: '/forgot-password',
         builder: (context, state) => const ForgotPasswordPage(),
       ),
       GoRoute(
-        path: '/verify-code',
-        builder: (context, state) =>
-            VerifyCodePage(email: state.extra as String),
+        path: '/otp-verification',
+        builder: (context, state) => const OtpVerificationPage(),
       ),
       GoRoute(
         path: '/reset-password',
         builder: (context, state) => const ResetPasswordPage(),
       ),
       GoRoute(path: '/terms', builder: (context, state) => const TermsPage()),
-      GoRoute(
-        path: '/name-input',
-        builder: (context, state) => const NameInputPage(),
-      ),
       GoRoute(path: '/home', builder: (context, state) => const HomePage()),
       GoRoute(
-        path: '/create-game',
-        builder: (context, state) =>
-            CreateGamePage(gameType: state.extra as String),
+        path: '/create-flashcard',
+        builder: (context, state) => const CreateFlashcardPage(),
       ),
       GoRoute(
-        path: '/flashcard',
-        builder: (context, state) => const FlashcardPage(),
+        path: '/upload-resources',
+        builder: (context, state) {
+          final gameType = state.uri.queryParameters['type'] ?? 'flashcard';
+          return UploadResourcesPage(gameType: gameType);
+        },
       ),
       GoRoute(
-        path: '/flashcard-editor',
-        builder: (context, state) => const FlashcardEditorPage(),
-      ),
-      GoRoute(path: '/quiz', builder: (context, state) => const QuizPage()),
-      GoRoute(
-        path: '/quiz-editor',
-        builder: (context, state) => const QuizEditorPage(),
+        path: '/processing',
+        builder: (context, state) => const ProcessingPage(),
       ),
       GoRoute(
-        path: '/study-guide',
-        builder: (context, state) => const StudyGuideViewerPage(),
+        path: '/flashcard-list',
+        builder: (context, state) => const FlashcardListPage(),
       ),
       GoRoute(
-        path: '/create-study-guide',
-        builder: (context, state) => const CreateStudyGuidePage(),
+        path: '/flashcard-edit',
+        builder: (context, state) => const FlashcardEditPage(),
       ),
     ],
   );

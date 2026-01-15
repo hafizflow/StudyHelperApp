@@ -1,28 +1,24 @@
 import 'package:equatable/equatable.dart';
 
 class FlashcardModel extends Equatable {
-  final String term;
-  final String definition;
-  final double progress;
+  final String id;
+  final String question;
+  final String answer;
 
   const FlashcardModel({
-    required this.term,
-    required this.definition,
-    this.progress = 0.0,
+    required this.id,
+    required this.question,
+    required this.answer,
   });
 
-  FlashcardModel copyWith({
-    String? term,
-    String? definition,
-    double? progress,
-  }) {
+  FlashcardModel copyWith({String? id, String? question, String? answer}) {
     return FlashcardModel(
-      term: term ?? this.term,
-      definition: definition ?? this.definition,
-      progress: progress ?? this.progress,
+      id: id ?? this.id,
+      question: question ?? this.question,
+      answer: answer ?? this.answer,
     );
   }
 
   @override
-  List<Object?> get props => [term, definition, progress];
+  List<Object?> get props => [id, question, answer];
 }

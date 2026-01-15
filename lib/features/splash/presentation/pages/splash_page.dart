@@ -22,44 +22,27 @@ class _SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFFAF7F4),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Robot mascot placeholder
             Container(
-              width: 200,
-              height: 200,
+              width: 150,
+              height: 150,
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(20),
               ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.smart_toy_outlined,
-                    size: 100,
-                    color: Theme.of(context).primaryColor,
-                  ),
-                  const SizedBox(height: 10),
-                  const Icon(
-                    Icons.lightbulb_outline,
-                    size: 30,
-                    color: Colors.pink,
-                  ),
-                ],
+              child: const Icon(
+                Icons.school,
+                size: 80,
+                color: Color(0xFFB8A4E8),
               ),
             ),
-            const SizedBox(height: 30),
-            Text(
+            const SizedBox(height: 24),
+            const Text(
               'My Study Buddy',
-              style: TextStyle(
-                fontSize: 32,
-                fontWeight: FontWeight.bold,
-                color: Colors.grey[800],
-              ),
+              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
             ),
           ],
         ),

@@ -12,21 +12,6 @@ class _OnboardingPageState extends State<OnboardingPage> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
 
-  final List<OnboardingContent> _pages = [
-    OnboardingContent(
-      icon: Icons.gamepad_outlined,
-      title: 'Play games with friends.',
-      description:
-          'Study solo or play with friends — test your knowledge through games, track your streaks, and make learning fun again.',
-    ),
-    OnboardingContent(
-      icon: Icons.note_outlined,
-      title: 'Smart Study Tools',
-      description:
-          'Turn your notes, lectures, or videos into flashcards, quizzes, study guides and fun study games.',
-    ),
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,69 +19,87 @@ class _OnboardingPageState extends State<OnboardingPage> {
         child: Column(
           children: [
             Expanded(
-              child: PageView.builder(
+              child: PageView(
                 controller: _pageController,
                 onPageChanged: (index) {
                   setState(() {
                     _currentPage = index;
                   });
                 },
-                itemCount: _pages.length,
-                itemBuilder: (context, index) {
-                  return _buildPage(_pages[index]);
-                },
+                children: [
+                  _buildPage(
+                    icon: Icons.upload_file,
+                    title: 'How It Works',
+                    description:
+                        'Record or upload your lectures, and MyStudyBuddy will turn them into organized notes you can highlight, review, and study from — instantly.',
+                  ),
+                  _buildPage(
+                    icon: Icons.games,
+                    title: 'Why You\'ll Love It',
+                    description:
+                        'Study solo or play with friends — test your knowledge through games, track your streaks, and make learning fun again.',
+                  ),
+                  _buildPage(
+                    icon: Icons.note,
+                    title:
+                        'Turn your notes, lectures, or videos into flashcards, quizzes, study guides and fun study games.',
+                    description: '',
+                  ),
+                ],
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(24),
+              padding: const EdgeInsets.all(20),
               child: Column(
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: List.generate(
-                      _pages.length,
+                      3,
                       (index) => Container(
                         margin: const EdgeInsets.symmetric(horizontal: 4),
-                        width: _currentPage == index ? 24 : 8,
+                        width: 8,
                         height: 8,
                         decoration: BoxDecoration(
+                          shape: BoxShape.circle,
                           color: _currentPage == index
-                              ? Theme.of(context).primaryColor
-                              : Colors.grey[300],
-                          borderRadius: BorderRadius.circular(4),
+                              ? const Color(0xFFB8A4E8)
+                              : Colors.grey.shade300,
                         ),
                       ),
                     ),
                   ),
                   const SizedBox(height: 24),
+                  if (_currentPage < 2)
+                    TextButton(
+                      onPressed: () {
+                        context.go('/user-name');
+                      },
+                      child: const Text('Skip'),
+                    ),
+                  const SizedBox(height: 8),
                   SizedBox(
                     width: double.infinity,
-                    height: 56,
+                    height: 50,
                     child: ElevatedButton(
                       onPressed: () {
-                        if (_currentPage < _pages.length - 1) {
+                        if (_currentPage < 2) {
                           _pageController.nextPage(
                             duration: const Duration(milliseconds: 300),
                             curve: Curves.easeInOut,
                           );
                         } else {
-                          context.go('/welcome');
+                          context.go('/user-name');
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Theme.of(context).primaryColor,
+                        backgroundColor: const Color(0xFFB8A4E8),
+                        foregroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
+                          borderRadius: BorderRadius.circular(25),
                         ),
                       ),
-                      child: Text(
-                        _currentPage < _pages.length - 1 ? 'Next' : 'Continue',
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white,
-                        ),
-                      ),
+                      child: Text(_currentPage < 2 ? 'Next' : 'Continue'),
                     ),
                   ),
                 ],
@@ -108,82 +111,41 @@ class _OnboardingPageState extends State<OnboardingPage> {
     );
   }
 
-  Widget _buildPage(OnboardingContent content) {
+  Widget _buildPage({
+    required IconData icon,
+    required String title,
+    required String description,
+  }) {
     return Padding(
       padding: const EdgeInsets.all(40),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            width: 200,
-            height: 200,
+            width: 150,
+            height: 150,
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(20),
             ),
-            child: Icon(
-              content.icon,
-              size: 100,
-              color: Theme.of(context).primaryColor,
-            ),
+            child: Icon(icon, size: 80, color: const Color(0xFFB8A4E8)),
           ),
-          const SizedBox(height: 60),
-          Container(
-            padding: const EdgeInsets.all(24),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(16),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.1),
-                  blurRadius: 10,
-                  offset: const Offset(0, 4),
-                ),
-              ],
-            ),
-            child: Column(
-              children: [
-                Icon(
-                  content.icon,
-                  size: 60,
-                  color: Theme.of(context).primaryColor,
-                ),
-                const SizedBox(height: 16),
-                Text(
-                  content.title,
-                  style: const TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 30),
+          const SizedBox(height: 40),
           Text(
-            content.description,
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.grey[700],
-              height: 1.5,
-            ),
+            title,
             textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
+          if (description.isNotEmpty) ...[
+            const SizedBox(height: 16),
+            Text(
+              description,
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 16, color: Colors.grey.shade600),
+            ),
+          ],
         ],
       ),
     );
   }
-}
-
-class OnboardingContent {
-  final IconData icon;
-  final String title;
-  final String description;
-
-  OnboardingContent({
-    required this.icon,
-    required this.title,
-    required this.description,
-  });
 }

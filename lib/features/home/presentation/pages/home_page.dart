@@ -9,237 +9,100 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'My Study Buddy',
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          'Home',
+          style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
         ),
+        centerTitle: true,
         backgroundColor: Colors.transparent,
         elevation: 0,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.notifications_outlined, color: Colors.black),
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: const Icon(Icons.settings_outlined, color: Colors.black),
-            onPressed: () {},
-          ),
-        ],
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Create New',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            _buildMenuItem(
+              context,
+              icon: Icons.style,
+              title: 'Flashcard Generation',
+              color: const Color(0xFFFFB6C1),
+              onTap: () => context.push('/create-flashcard'),
             ),
-            const SizedBox(height: 20),
-            Row(
-              children: [
-                Expanded(
-                  child: _GameTypeCard(
-                    icon: Icons.note_outlined,
-                    label: 'Note',
-                    color: const Color(0xFFE8DEF8),
-                    onTap: () => context.push('/create-game', extra: 'note'),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: _GameTypeCard(
-                    icon: Icons.style_outlined,
-                    label: 'Flashcard',
-                    color: const Color(0xFFFFF4E5),
-                    onTap: () =>
-                        context.push('/create-game', extra: 'flashcard'),
-                  ),
-                ),
-              ],
+            const SizedBox(height: 16),
+            _buildMenuItem(
+              context,
+              icon: Icons.quiz,
+              title: 'Quiz Race',
+              color: const Color(0xFFD8BFD8),
+              onTap: () => context.push('/upload-resources?type=quiz'),
             ),
-            const SizedBox(height: 12),
-            Row(
-              children: [
-                Expanded(
-                  child: _GameTypeCard(
-                    icon: Icons.quiz_outlined,
-                    label: 'Quiz',
-                    color: const Color(0xFFE3F2FD),
-                    onTap: () => context.push('/create-game', extra: 'quiz'),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: _GameTypeCard(
-                    icon: Icons.gamepad_outlined,
-                    label: 'Games',
-                    color: const Color(0xFFFCE4EC),
-                    onTap: () => context.push('/create-game', extra: 'games'),
-                  ),
-                ),
-              ],
+            const SizedBox(height: 16),
+            _buildMenuItem(
+              context,
+              icon: Icons.sports_esports,
+              title: 'Matching Sprint',
+              color: const Color(0xFFADD8E6),
+              onTap: () => context.push('/upload-resources?type=matching'),
             ),
-            const SizedBox(height: 30),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Recent',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-                TextButton(onPressed: () {}, child: const Text('See All')),
-              ],
+            const SizedBox(height: 16),
+            _buildMenuItem(
+              context,
+              icon: Icons.book,
+              title: 'Study Guide Builder',
+              color: const Color(0xFFFFDAB9),
+              onTap: () => context.push('/upload-resources?type=study-guide'),
             ),
-            const SizedBox(height: 12),
-            _RecentCard(
-              subject: 'Biology',
-              title: 'Cell Division',
-              icon: Icons.science_outlined,
-              color: Colors.green[100]!,
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMenuItem(
+    BuildContext context, {
+    required IconData icon,
+    required String title,
+    required Color color,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.1),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
             ),
-            const SizedBox(height: 12),
-            _RecentCard(
-              subject: 'Chemistry',
-              title: 'Periodic Table',
-              icon: Icons.science_outlined,
-              color: Colors.blue[100]!,
-            ),
-            const SizedBox(height: 12),
-            _RecentCard(
-              subject: 'Math',
-              title: 'Calculus Basics',
-              icon: Icons.calculate_outlined,
-              color: Colors.orange[100]!,
-            ),
-            const SizedBox(height: 30),
-            SizedBox(
-              width: double.infinity,
+          ],
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 56,
               height: 56,
-              child: ElevatedButton.icon(
-                onPressed: () => context.push('/create-study-guide'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(context).primaryColor,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                ),
-                icon: const Icon(Icons.book_outlined, color: Colors.white),
-                label: const Text(
-                  'Create Study Guide',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white,
-                  ),
+              decoration: BoxDecoration(
+                color: color.withOpacity(0.2),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(icon, size: 28, color: color),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
             ),
+            const Icon(Icons.arrow_forward_ios, size: 18, color: Colors.grey),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class _GameTypeCard extends StatelessWidget {
-  final IconData icon;
-  final String label;
-  final Color color;
-  final VoidCallback onTap;
-
-  const _GameTypeCard({
-    required this.icon,
-    required this.label,
-    required this.color,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(16),
-      child: Container(
-        padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          color: color,
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Column(
-          children: [
-            Icon(icon, size: 48),
-            const SizedBox(height: 8),
-            Text(
-              label,
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _RecentCard extends StatelessWidget {
-  final String subject;
-  final String title;
-  final IconData icon;
-  final Color color;
-
-  const _RecentCard({
-    required this.subject,
-    required this.title,
-    required this.icon,
-    required this.color,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: color,
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: Icon(icon, size: 32),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  subject,
-                  style: const TextStyle(fontSize: 12, color: Colors.grey),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const Icon(Icons.chevron_right, color: Colors.grey),
-        ],
       ),
     );
   }
