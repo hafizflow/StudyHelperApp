@@ -12,9 +12,13 @@ class _OnboardingPageState extends State<OnboardingPage> {
   final PageController _pageController = PageController();
   int _currentPage = 0;
 
+  static const bgColor = Color(0xFFFFF8F2);
+  static const primary = Color(0xFFB8A4E8);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: bgColor,
       body: SafeArea(
         child: Column(
           children: [
@@ -22,87 +26,69 @@ class _OnboardingPageState extends State<OnboardingPage> {
               child: PageView(
                 controller: _pageController,
                 onPageChanged: (index) {
-                  setState(() {
-                    _currentPage = index;
-                  });
+                  setState(() => _currentPage = index);
                 },
-                children: [
-                  _buildPage(
-                    icon: Icons.upload_file,
-                    title: 'How It Works',
-                    description:
-                        'Record or upload your lectures, and MyStudyBuddy will turn them into organized notes you can highlight, review, and study from — instantly.',
-                  ),
-                  _buildPage(
-                    icon: Icons.games,
-                    title: 'Why You\'ll Love It',
-                    description:
-                        'Study solo or play with friends — test your knowledge through games, track your streaks, and make learning fun again.',
-                  ),
-                  _buildPage(
-                    icon: Icons.note,
-                    title:
-                        'Turn your notes, lectures, or videos into flashcards, quizzes, study guides and fun study games.',
-                    description: '',
-                  ),
-                ],
+                children: const [_PageThree(), _PageOne(), _PageTwo()],
               ),
             ),
+
+            /// Page indicator
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: List.generate(
+                3,
+                (index) => Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 4),
+                  width: 8,
+                  height: 8,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: _currentPage == index
+                        ? primary
+                        : Colors.grey.shade300,
+                  ),
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 20),
+
+            if (_currentPage < 2)
+              TextButton(
+                onPressed: () => context.go('/user-name'),
+                child: const Text(
+                  'Skip',
+                  style: TextStyle(color: Colors.black54),
+                ),
+              ),
+
             Padding(
               padding: const EdgeInsets.all(20),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: List.generate(
-                      3,
-                      (index) => Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 4),
-                        width: 8,
-                        height: 8,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: _currentPage == index
-                              ? const Color(0xFFB8A4E8)
-                              : Colors.grey.shade300,
-                        ),
-                      ),
+              child: SizedBox(
+                width: double.infinity,
+                height: 52,
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (_currentPage < 2) {
+                      _pageController.nextPage(
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeInOut,
+                      );
+                    } else {
+                      context.go('/user-name');
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: primary,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(26),
                     ),
                   ),
-                  const SizedBox(height: 24),
-                  if (_currentPage < 2)
-                    TextButton(
-                      onPressed: () {
-                        context.go('/user-name');
-                      },
-                      child: const Text('Skip'),
-                    ),
-                  const SizedBox(height: 8),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 50,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        if (_currentPage < 2) {
-                          _pageController.nextPage(
-                            duration: const Duration(milliseconds: 300),
-                            curve: Curves.easeInOut,
-                          );
-                        } else {
-                          context.go('/user-name');
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFB8A4E8),
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25),
-                        ),
-                      ),
-                      child: Text(_currentPage < 2 ? 'Next' : 'Continue'),
-                    ),
+                  child: Text(
+                    _currentPage < 2 ? 'Next' : 'Continue',
+                    style: const TextStyle(fontSize: 16),
                   ),
-                ],
+                ),
               ),
             ),
           ],
@@ -110,40 +96,141 @@ class _OnboardingPageState extends State<OnboardingPage> {
       ),
     );
   }
+}
 
-  Widget _buildPage({
-    required IconData icon,
-    required String title,
-    required String description,
-  }) {
+class _PageOne extends StatelessWidget {
+  const _PageOne();
+
+  @override
+  Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(40),
+      padding: const EdgeInsets.all(16),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
-            width: 150,
-            height: 150,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Icon(icon, size: 80, color: const Color(0xFFB8A4E8)),
+          Image.asset('assets/images/robot.png', height: 120),
+          const SizedBox(height: 24),
+          const Text(
+            'How It Works',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
           ),
           const SizedBox(height: 40),
-          Text(
-            title,
+          Image.asset('assets/images/upload.png', height: 120),
+          const SizedBox(height: 24),
+          const Text(
+            'Record or upload your lectures, and MyStudyBuddy will turn them into organized notes you can highlight, review, and study from — instantly.',
             textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            style: TextStyle(fontSize: 14, color: Colors.black54),
           ),
-          if (description.isNotEmpty) ...[
-            const SizedBox(height: 16),
-            Text(
-              description,
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 16, color: Colors.grey.shade600),
+        ],
+      ),
+    );
+  }
+}
+
+class _PageTwo extends StatelessWidget {
+  const _PageTwo();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset('assets/images/robot.png', height: 120),
+          const SizedBox(height: 24),
+          const Text(
+            'Why You’ll Love It',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+          ),
+          const SizedBox(height: 40),
+
+          Container(
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(16),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.05),
+                  blurRadius: 10,
+                ),
+              ],
             ),
-          ],
+            child: Column(
+              children: [
+                Image.asset('assets/images/games.png', height: 80),
+                const SizedBox(height: 12),
+                const Text(
+                  'Play games with friends.',
+                  style: TextStyle(fontWeight: FontWeight.w600),
+                ),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 24),
+          const Text(
+            'Study solo or play with friends — test your knowledge through games, track your streaks, and make learning fun again.',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 14, color: Colors.black54),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _PageThree extends StatelessWidget {
+  const _PageThree();
+
+  Widget _feature(String icon, String label) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(18),
+        boxShadow: [
+          BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 8),
+        ],
+      ),
+      child: Column(
+        children: [
+          Image.asset(icon, height: 120, width: 120),
+          const SizedBox(height: 8),
+          Text(label, style: const TextStyle(fontWeight: FontWeight.w500)),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(32),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset('assets/images/robot.png', height: 120),
+          const SizedBox(height: 24),
+          const Text(
+            'Turn your notes, lectures, or videos into flashcards, quizzes, study guides and fun study games.',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 14, color: Colors.black54),
+          ),
+          const SizedBox(height: 32),
+
+          Wrap(
+            spacing: 16,
+            runSpacing: 16,
+            children: [
+              _feature('assets/images/note.png', 'Note'),
+              _feature('assets/images/flashcard.png', 'Flashcard'),
+              _feature('assets/images/quiz.png', 'Quiz'),
+              _feature('assets/images/games.png', 'Games'),
+            ],
+          ),
         ],
       ),
     );

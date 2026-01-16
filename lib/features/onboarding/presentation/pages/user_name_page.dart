@@ -18,8 +18,8 @@ class UserNamePage extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(24),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            const Spacer(),
             Container(
               width: 120,
               height: 120,
@@ -27,10 +27,10 @@ class UserNamePage extends StatelessWidget {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(20),
               ),
-              child: const Icon(
-                Icons.school,
-                size: 60,
-                color: Color(0xFFB8A4E8),
+              child: Image.asset(
+                'assets/images/robot.png',
+                width: 120,
+                height: 120,
               ),
             ),
             const SizedBox(height: 32),
@@ -38,7 +38,7 @@ class UserNamePage extends StatelessWidget {
               'My Study Buddy',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 48),
+            const SizedBox(height: 120),
             TextField(
               decoration: InputDecoration(
                 hintText: 'What should I call you?',

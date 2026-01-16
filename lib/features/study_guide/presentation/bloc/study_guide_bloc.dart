@@ -16,7 +16,7 @@ class StudyGuideBloc extends Bloc<StudyGuideEvent, StudyGuideState> {
   ) async {
     emit(StudyGuideGenerating());
     await Future.delayed(const Duration(seconds: 2));
-    emit(StudyGuideGenerated(content: 'Study guide content here'));
+    emit(const StudyGuideGenerated(content: 'Study guide content here'));
   }
 
   void _onSaveStudyGuide(

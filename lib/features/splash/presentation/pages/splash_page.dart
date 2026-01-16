@@ -26,20 +26,7 @@ class _SplashPageState extends State<SplashPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              width: 150,
-              height: 150,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: const Icon(
-                Icons.school,
-                size: 80,
-                color: Color(0xFFB8A4E8),
-              ),
-            ),
-            const SizedBox(height: 24),
+            Image.asset('assets/images/robot.png'),
             const Text(
               'My Study Buddy',
               style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),

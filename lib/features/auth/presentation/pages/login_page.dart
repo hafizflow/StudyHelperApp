@@ -43,10 +43,10 @@ class _LoginPageState extends State<LoginPage> {
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(20),
                   ),
-                  child: const Icon(
-                    Icons.school,
-                    size: 50,
-                    color: Color(0xFFB8A4E8),
+                  child: Image.asset(
+                    'assets/images/robot.png',
+                    width: 60,
+                    height: 60,
                   ),
                 ),
                 const SizedBox(height: 24),
